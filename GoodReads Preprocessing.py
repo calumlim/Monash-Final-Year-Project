@@ -37,17 +37,25 @@ def review_avg_text_count(arr):
     avg_len = avg_len/count
     return avg_len
 def count_unique_users():
+    f = open("unique_users.txt", "w")
     n = len(column_reviewer_name)
     unique_users_arr = []
+    count = 0
     user_arr = return_array(column_reviewer_name)
     for i in range(n):
         current_user = str(user_arr[i])
         if current_user!='None':
+            if i%250==0:
+                print("Current progress: ", i, current_user)
+            f.write(str(current_user)+"\n")
             for j in range(0,n):
-                unique_users_arr.append(current_user)
+                #unique_users_arr.append(current_user)
+                count+=1
                 next_user = str(user_arr[j])
                 if current_user==next_user:
                     user_arr[j] = None
+    f.write(str(count))
+    f.close()
     return len(unique_users_arr)
 def count_unique_books():
     # n = len(column_title)
