@@ -3,6 +3,7 @@
 import pandas as pd
 import math
 import time
+import numpy
 
 df = pd.read_csv('br_gk.csv', header=0)
 column_bookID = df['bookID']
@@ -59,7 +60,7 @@ def count_unique_users():
     return len(unique_users_arr)
 def count_unique_books():
     # n = len(column_title)
-    n = 200
+    n = 500
     title_arr = return_array(column_title)
     review_arr = return_array(column_text_review)
     count_books = []
@@ -76,7 +77,7 @@ def count_unique_books():
                 next_book = str(title_arr[j])
                 if next_book==current_book:
                     count_duplicate+=1
-                    duplicate_index_tmp.append(j+2)
+                    duplicate_index_tmp.append(j)
                     title_arr[j]=None
             count_books.append([current_book, count_duplicate])
             duplicate_index.append(duplicate_index_tmp)
@@ -114,16 +115,92 @@ def print_duplicate_info(arr):
         if len(arr[i])-1>1:
             print("Title: ", arr[i][0], "Count: ", len(arr[i])-1, arr[i])
             for j in range(1,len(arr[i])):
-                if type(review_text_arr[arr[i][j]-2])==float:
-                    print(review_text_arr[arr[i][j]-2])
+                if type(review_text_arr[arr[i][j]])==float:
+                    print(review_text_arr[arr[i][j]])
                 else:
-                    if len(review_text_arr[arr[i][j]-2])>50:
-                        print(review_text_arr[arr[i][j]-2][0:50])
+                    if len(review_text_arr[arr[i][j]])>50:
+                        print(review_text_arr[arr[i][j]][0:50])
             print("\n")
+def data_cleanup():
+    #delete rows without rating and review
+    #delete duplicate book title rows
+    #sort in alphabetical order
+
+    book_arr = return_array(column_bookID)
+    title_arr = return_array(column_title)
+    author_arr = return_array(column_author)
+    avg_rating_arr = return_array(column_avg_rating)
+    rating_count_arr = return_array(column_ratings_count)
+    review_count_arr = return_array(column_reviews_count)
+    reviewer_arr = return_array(column_reviewer_name)
+    reviewer_rating_arr = return_array(column_user_rating)
+    review_text_arr = return_array(column_text_review)
+
+    print("Reading data done!\n")
+
+    #delete duplicate book title rows
+    duplicate_index_arr = count_unique_books()[1]       #obtain the duplicate books info array
+    offset = 0
+    for i in range(len(duplicate_index_arr)):
+        if len(duplicate_index_arr[i])>2:
+            for j in range(1,len(duplicate_index_arr[i])):
+                if duplicate_index_arr[i][j]!=None:
+                    current_review_text = review_text_arr[duplicate_index_arr[i][j]]
+                    for k in range(2, len(duplicate_index_arr[i])):
+                        if k!=j:
+                            if duplicate_index_arr[i][k]!=None:
+                                compare_review_text = review_text_arr[duplicate_index_arr[i][k]]
+                                
+                                # if type(current_review_text)!=float and type(compare_review_text)!=float:
+                                #     print([i,j])
+                                #     print(current_review_text[0:50])
+                                #     print(compare_review_text[0:50])
+                                #     print()
+                                if current_review_text==compare_review_text:
+                                    book_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    title_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    author_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    avg_rating_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    rating_count_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    review_count_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    reviewer_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    reviewer_rating_arr.pop(duplicate_index_arr[i][k]-offset)
+                                    review_text_arr.pop(duplicate_index_arr[i][k]-offset)
+
+                                    # print("Destroyed row at index: ", duplicate_index_arr[i][k])
+                                    duplicate_index_arr[i][k] = None
+                                    offset+=1
+                    #print("array: ", duplicate_index_arr[i])
+    print("GTFO Duplicate data!")
+    #delete duplicate book title rows
+    i = 0
+    n = len(review_text_arr)
+    offset = 0
+    while i<n:
+        # print(i, type(review_text_arr[i]), type(reviewer_rating_arr[i]))
+        if type(review_text_arr[i])==float and isinstance(reviewer_rating_arr[i], numpy.float64)==True:
+            book_arr.pop(i-offset)
+            title_arr.pop(i-offset)
+            author_arr.pop(i-offset)
+            avg_rating_arr.pop(i-offset)
+            rating_count_arr.pop(i-offset)
+            review_count_arr.pop(i-offset)
+            reviewer_arr.pop(i-offset)
+            reviewer_rating_arr.pop(i-offset)
+            review_text_arr.pop(i-offset)
+
+            print(len(review_text_arr))
+            offset+=1
+            n-=1
+        i+=1
+
+
+
 # print(len(column_bookID))
 # print(min_max(column_bookID))
 # print_duplicate_info(count_unique_books()[1])
-print(count_unique_users())
+# print(count_unique_users())
 # count_unique_books()
 # print("Mean rating: ",mean_rating(column_user_rating))
 # print("Avg. length of review: ",review_avg_text_count(column_text_review))
+data_cleanup()
