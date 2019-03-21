@@ -60,13 +60,15 @@ def count_unique_users():
     return len(unique_users_arr)
 def count_unique_books():
     # n = len(column_title)
-    n = 500
+    n = len(column_title)
     title_arr = return_array(column_title)
     review_arr = return_array(column_text_review)
     count_books = []
     duplicate_index = []
 
     for i in range(n):
+        if i%250==0:
+            print("Checking duplicate data...", i)
         duplicate_index_tmp = []
         current_book = str(title_arr[i])
         if current_book!='None':
@@ -138,10 +140,13 @@ def data_cleanup():
 
     print("Reading data done!\n")
 
+    print("Duplicate thots be gone!\n")
     #delete duplicate book title rows
     duplicate_index_arr = count_unique_books()[1]       #obtain the duplicate books info array
     offset = 0
     for i in range(len(duplicate_index_arr)):
+        if i%250==0:
+            print("Duplicate thots begone progress: ", i)
         if len(duplicate_index_arr[i])>2:
             for j in range(1,len(duplicate_index_arr[i])):
                 if duplicate_index_arr[i][j]!=None:
@@ -150,7 +155,7 @@ def data_cleanup():
                         if k!=j:
                             if duplicate_index_arr[i][k]!=None:
                                 compare_review_text = review_text_arr[duplicate_index_arr[i][k]]
-                                
+
                                 # if type(current_review_text)!=float and type(compare_review_text)!=float:
                                 #     print([i,j])
                                 #     print(current_review_text[0:50])
@@ -171,12 +176,14 @@ def data_cleanup():
                                     duplicate_index_arr[i][k] = None
                                     offset+=1
                     #print("array: ", duplicate_index_arr[i])
-    print("GTFO Duplicate data!")
+    print("GTFO Duplicate data time!\n")
     #delete duplicate book title rows
     i = 0
     n = len(review_text_arr)
     offset = 0
     while i<n:
+        if i%250==0:
+            print("GTFO Duplicate rows progress: ", i)
         # print(i, type(review_text_arr[i]), type(reviewer_rating_arr[i]))
         if type(review_text_arr[i])==float and isinstance(reviewer_rating_arr[i], numpy.float64)==True:
             book_arr.pop(i-offset)
@@ -189,10 +196,18 @@ def data_cleanup():
             reviewer_rating_arr.pop(i-offset)
             review_text_arr.pop(i-offset)
 
-            print(len(review_text_arr))
+            # print(len(review_text_arr))
             offset+=1
             n-=1
         i+=1
+    
+    f = open("cleaned_dataset.txt", "w")
+    for i in range(len(review_text_arr)):
+        if i%250==0:
+            print("Writing data....", i, "out of", len(review_text_arr))
+        f.write(str(book_arr[i])+"\t"+str(title_arr[i])+"\t"+str(author_arr[i])+"\t"+str(avg_rating_arr[i])+"\t"+str(rating_count_arr[i])+"\t"+str(review_count_arr[i])+"\t"+str(reviewer_arr[i])+"\t"+str(reviewer_rating_arr[i])+"\t"+str(review_text_arr[i])+"\n")
+    f.write(str(len(review_text_arr)))
+    f.close()
 
 
 
