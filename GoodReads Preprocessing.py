@@ -60,6 +60,7 @@ def count_unique_users():
     return len(unique_users_arr)
 def count_unique_books():
     # n = len(column_title)
+    f = open('duplicate_books_data.txt', "w+")
     n = len(column_title)
     title_arr = return_array(column_title)
     review_arr = return_array(column_text_review)
@@ -83,8 +84,10 @@ def count_unique_books():
                     title_arr[j]=None
             count_books.append([current_book, count_duplicate])
             duplicate_index.append(duplicate_index_tmp)
+            f.write(str(duplicate_index_tmp)+"\n")
             # print(duplicate_index_tmp)
         # print([current_book, count_duplicate], "Time taken: "+ str(time.time()-start_time), len(title_arr))
+    f.close()
     return [count_books, duplicate_index]
 
 def min_max(arr):
@@ -150,11 +153,11 @@ def data_cleanup():
         if len(duplicate_index_arr[i])>2:
             for j in range(1,len(duplicate_index_arr[i])):
                 if duplicate_index_arr[i][j]!=None:
-                    current_review_text = review_text_arr[duplicate_index_arr[i][j]]
+                    current_review_text = review_text_arr[duplicate_index_arr[i][j]-offset]
                     for k in range(2, len(duplicate_index_arr[i])):
                         if k!=j:
                             if duplicate_index_arr[i][k]!=None:
-                                compare_review_text = review_text_arr[duplicate_index_arr[i][k]]
+                                compare_review_text = review_text_arr[duplicate_index_arr[i][k]-offset]
 
                                 # if type(current_review_text)!=float and type(compare_review_text)!=float:
                                 #     print([i,j])
@@ -185,7 +188,7 @@ def data_cleanup():
         if i%250==0:
             print("GTFO Duplicate rows progress: ", i)
         # print(i, type(review_text_arr[i]), type(reviewer_rating_arr[i]))
-        if type(review_text_arr[i])==float and isinstance(reviewer_rating_arr[i], numpy.float64)==True:
+        if type(review_text_arr[i-offset])==float and isinstance(reviewer_rating_arr[i-offset], numpy.float64)==True:
             book_arr.pop(i-offset)
             title_arr.pop(i-offset)
             author_arr.pop(i-offset)
