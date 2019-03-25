@@ -238,13 +238,13 @@ def sort_cleaned_data_by_title():
                 for k in range(0, len(final_arr[i])-j-1): 
                     if len(final_arr[i][k].split('\t')[1]) > len(final_arr[i][k+1].split('\t')[1]):
                         final_arr[i][k], final_arr[i][k+1] = final_arr[i][k+1], final_arr[i][k]
-                print(final_arr[i][j].split('\t')[1])
+                # print(final_arr[i][j].split('\t')[1])
         else:
             for j in range(len(final_arr[i])):
                 for k in range(0, len(final_arr[i])-j-1): 
                     if len(final_arr[i][k].split('\t')[1]) > len(final_arr[i][k+1].split('\t')[1]):
                         final_arr[i][k], final_arr[i][k+1] = final_arr[i][k+1], final_arr[i][k]
-                print(final_arr[i][j].split('\t')[1])
+                # print(final_arr[i][j].split('\t')[1])
     
     for i in range(len(final_arr)):
         if i!=len(final_arr):
