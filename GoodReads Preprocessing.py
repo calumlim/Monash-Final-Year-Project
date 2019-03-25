@@ -212,8 +212,52 @@ def data_cleanup():
     f.write(str(len(review_text_arr)))
     f.close()
 
+def sort_cleaned_data_by_title():
+    f = open('cleaned_dataset.txt', 'r+')
+    g = open('cleaned_dataset_sorted_title.txt', 'w+')
+    final_arr = []
+    for i in range(28):
+        final_arr.append([])
 
-
+    for line in f:
+        line_split = line.split('\t')
+        if len(line_split)>2:
+            if len(line_split[1][0].lower())>1:
+                final_arr[27].append(line)
+                # print("Others:\t", line_split[1][0])
+            elif ord(line_split[1][0].lower())-97<0 or ord(line_split[1][0].lower())-97>27:
+                final_arr[27].append(line)
+                # print("Others:\t", line_split[1][0], ord(line_split[1][0].lower())-97)
+            else:
+                final_arr[ord(line_split[1][0].lower())-97].append(line)
+                # print("Else:\t", line_split[1][0], ord(line_split[1][0].lower())-97)
+    for i in range(len(final_arr)):
+        print(i)
+        if i!=len(final_arr):
+            for j in range(len(final_arr[i])):
+                for k in range(0, len(final_arr[i])-j-1): 
+                    if len(final_arr[i][k].split('\t')[1]) > len(final_arr[i][k+1].split('\t')[1]):
+                        final_arr[i][k], final_arr[i][k+1] = final_arr[i][k+1], final_arr[i][k]
+                print(final_arr[i][j].split('\t')[1])
+        else:
+            for j in range(len(final_arr[i])):
+                for k in range(0, len(final_arr[i])-j-1): 
+                    if len(final_arr[i][k].split('\t')[1]) > len(final_arr[i][k+1].split('\t')[1]):
+                        final_arr[i][k], final_arr[i][k+1] = final_arr[i][k+1], final_arr[i][k]
+                print(final_arr[i][j].split('\t')[1])
+    
+    for i in range(len(final_arr)):
+        if i!=len(final_arr):
+            for j in range(len(final_arr[i])):
+                g.write(final_arr[i][j])
+                # print(final_arr[i][j].split('\t')[1])
+        else:
+            for j in range(len(final_arr[i])):
+                g.write(final_arr[i][j])
+                # print(final_arr[i][j].split('\t')[1])
+    
+    g.close()
+    f.close()
 # print(len(column_bookID))
 # print(min_max(column_bookID))
 # print_duplicate_info(count_unique_books()[1])
@@ -221,4 +265,5 @@ def data_cleanup():
 # count_unique_books()
 # print("Mean rating: ",mean_rating(column_user_rating))
 # print("Avg. length of review: ",review_avg_text_count(column_text_review))
-data_cleanup()
+# data_cleanup()
+sort_cleaned_data_by_title()
