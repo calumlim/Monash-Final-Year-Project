@@ -4,6 +4,7 @@ import pandas as pd
 import math
 import time
 import numpy
+import csv
 
 df = pd.read_csv('br_gk.csv', header=0)
 column_bookID = df['bookID']
@@ -258,6 +259,27 @@ def sort_cleaned_data_by_title():
     
     g.close()
     f.close()
+def write_csv(header, filename):
+    f = open(filename, "r+")
+
+    with open(filename+".csv", mode='w') as csv_file:
+        fieldnames = header
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        count = 0
+        writer.writeheader()
+        for line in f:
+            if count%10==0:
+                print("Progress: ", count)
+            line_split = line.split('\t')
+            line_split[-1] = line_split[-1].replace('\n', '')
+            row_data = {}
+            for i in range(len(header)):
+                row_data[header[i]] = line_split[i]
+            writer.writerow(row_data)
+            count+=1
+
+
+    
 # print(len(column_bookID))
 # print(min_max(column_bookID))
 # print_duplicate_info(count_unique_books()[1])
@@ -266,4 +288,9 @@ def sort_cleaned_data_by_title():
 # print("Mean rating: ",mean_rating(column_user_rating))
 # print("Avg. length of review: ",review_avg_text_count(column_text_review))
 # data_cleanup()
-sort_cleaned_data_by_title()
+# sort_cleaned_data_by_title()
+
+
+
+csv_header = ["bookID", "title", "author", "avg_rating", "total_rating", "total_review", "reviewer_name", "reviewer_rating", "review"]
+write_csv(csv_header, "cleaned_dataset_sorted_title.txt")
