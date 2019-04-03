@@ -268,8 +268,8 @@ def write_csv(header, filename):
         count = 0
         writer.writeheader()
         for line in f:
-            # if count%10==0:
-            #     print("Progress: ", count)
+            if count%10==0:
+                print("Progress: ", count)
             line_split = line.split('\t')
             line_split[-1] = line_split[-1].replace('\n', '')
             
@@ -284,8 +284,6 @@ def write_csv(header, filename):
             for i in range(len(line_split)):
                 row_data[header[i]] = line_split[i]
             writer.writerow(row_data)
-            print(row_data)
-            print()
             count+=1
 
 
