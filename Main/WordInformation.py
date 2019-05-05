@@ -5,30 +5,27 @@ class WordInformation:
     object as its key in the dictionary.
     
     Attributes:
-        MAX_RATING (int)        : The number of class ratings
-                                  (normally 1-5 stars)
+        MAX_RATING (int): The number of class ratings (normally 1-5 stars)
 
-        ratingFrequency (int[]) : The number of times an n-gram appears
-                                  in each class rating (1-5 stars).
+        tf (int[])      : Term frequency for each class rating
                                   
-        tfidf (int[])           : The weighted score given for each
-                                  class rating (1-5 stars).     
+        tfidf (int[])   : The weighted score given for each class rating
     """
 
     
-    def __init__(self):
+    def __init__(self, maxRating):
         """
         Every WordInformation when instantiated starts with 0 values for
         all its attribute array values.
         
-        - The values in ratingFrequency is incremented while the training
-        data set is being read in.
+        - The values in tf is incremented while the training data set
+        is being read in.
         - The values in tfidf is computed after the whole training data
         set has been read.
         """
-        MAX_RATING = 5
-        self.ratingFrequency = [0] * (MAX_RATING + 1)
-        self.tfidf = [0] * (MAX_RATING + 1)           
+        self.MAX_RATING = maxRating
+        self.tf = [0] * (self.MAX_RATING + 1)
+        self.tfidf = [0] * (self.MAX_RATING + 1)           
         
 
     def getNumRatingsWordAppears(self):
@@ -41,10 +38,16 @@ class WordInformation:
             The number of documents that has the word.
         """
         count = 0
-        for frequency in self.ratingFrequency:
+        for frequency in self.tf:
             if frequency != 0:
                 count += 1
         return count
+
+
+    def setTF(self, totalTerms):
+        for i in range(1, self.MAX_RATING + 1):
+            if totalTerms[i] > 0:
+                self.tf[i] = self.tf[i]/totalTerms[i]
 
 
     def getTFIDF(self):
@@ -66,15 +69,16 @@ class WordInformation:
             idf (float): math.log( number of class ratings /
                                    getNumRatingsWordAppears() )
         """
-        self.tfidf = [i * idf for i in self.ratingFrequency]
+        for i in range(1, len(self.tf)):
+            self.tfidf[i] = self.tf[i] * idf
     
 
     def incrementFrequency(self, rating):
         """
-        Increment a rating in ratingFrequency by 1. This is called
+        Increment a rating in tf by 1. This is called
         everytime the corresponding work occurs in the corpus.
 
         Arguments:
             rating (int): the class rating (1-5 stars) that the word appears in
         """
-        self.ratingFrequency[rating] += 1
+        self.tf[rating] += 1
