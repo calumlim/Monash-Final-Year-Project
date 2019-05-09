@@ -4,11 +4,11 @@ import re
 
 def cleanSentence(inputSentence):
     """
-    Four regular expression rules that is used to preprocess the written
+    Three regular expression rules that is used to preprocess the written
     reviews in the data set.
-    1 - remove punctuations.
-    2 - remove ellipsis.
-    3 & 4 - Make full stops separate from words
+    1 - Remove punctuations.
+    2 - Remove any two or whitespaces together
+    3 - Remove any whitespace from the start or end of a sentence
 
     Arguments:
         inputSentence (str): a written review from the input data set.
@@ -20,20 +20,15 @@ def cleanSentence(inputSentence):
     sentence = sentence.lower()
     
     # 1 remove punctutations
-    sentence = re.sub(r'[‚,<>?/:;"{}\-_+=)()*&^%$#@!`~|\\]', r' ', sentence)
+    sentence = re.sub(r'[.‚,<>?/:;"{}\-_+=)()*&^%$#@!`~|\\]', r' ', sentence)
 
-    # 2 remove any ellipsis
-    sentence = re.sub(r'(\.(\.)+)', r' ', sentence) 
+    # 2 remove two or more whitespaces that are together
+    sentence = re.sub(r'[ ]{2,}', r' ', sentence)
 
-    # 3 separate fullstops from the preceding word
-    # e.g. "Hello." --> "Hello ."
-    sentence = re.sub(r'([a-z1-9]){1}\.', r'\g<1> .', sentence)
-
-    # 4 separate fullstops from the following word
-    # e.g. ".Hello" --> ". Hello"
-    sentence = re.sub(r'\.([a-z1-9]){1}', r'. \g<1>', sentence)
+    # 3 remove whitespace from start or end of sentence
+    sentence = re.sub('(^ )|( $)*', r'', sentence)
     
-    return sentence.strip()
+    return sentence
 
 
 def removeStopWords(inputSentence):
@@ -91,7 +86,7 @@ def preprocess():
         outputString02 += removeStopWords(cleanedWriting) + "\n"
         outputString03 += lemmatizeSentence(cleanedWriting) + "\n"
         outputString04 += lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
-        
+
     reviewFile.close()
     
     outputFile = open("dataset-preprocessed-01.txt", "w", encoding="utf-8-sig")
