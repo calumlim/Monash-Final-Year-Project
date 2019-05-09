@@ -68,33 +68,11 @@ class Dictionary:
         """
         sentence = writtenReview.split()
         for word in sentence:
-            if word != ".":
-                if word not in self.dictionary:
-                    self.addItem(word)
-                self.dictionary[word].incrementFrequency(rating)
-                self.totalTerms[rating] += 1
-
-
-    def addBigrams(self, rating, writtenReview):
-        """"
-        Add bigrams into a dictionary.
-
-        Arguments:
-            rating (int): The rating given for a written review
-            writtenReview (str): The written review
-        """
-        sentence = writtenReview.split()
-        
-        for i in range(len(sentence) - 1):
-            currentWord = sentence[i]
-            nextWord = sentence[i]
-            bigram = currentWord + " " + nextWord
-            
-            if currentWord != "." and nextWord != ".":
-                if bigram not in self.dictionary:
-                    self.addItem(bigram)
-                self.dictionary[bigram].incrementFrequency(rating)
-
+            if word not in self.dictionary:
+                self.addItem(word)
+            self.totalTerms[rating] += 1
+            self.dictionary[word].incrementFrequency(rating)
+                
 
     def computeTF(self):
         """
