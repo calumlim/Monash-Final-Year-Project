@@ -4,10 +4,10 @@ import re
 
 def cleanSentence(inputSentence):
     """
-    Three regular expression rules that is used to preprocess the written
-    reviews in the data set.
+    First change all uppercase characters to lowercase. Then, three regular expression rules that is used to 
+    preprocess the written reviews in the data set.
     1 - Remove punctuations.
-    2 - Remove any two or whitespaces together
+    2 - Remove any two or more whitespaces together
     3 - Remove any whitespace from the start or end of a sentence
 
     Arguments:
