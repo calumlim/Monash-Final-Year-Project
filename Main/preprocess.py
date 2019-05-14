@@ -67,7 +67,7 @@ def lemmatizeSentence(inputSentence):
 
 
 def preprocess():
-    reviewFile = open("dataset-amazon.txt", "r", encoding="utf-8-sig")
+    reviewFile = open("amazon-consumer-review.txt", "r", encoding="latin-1")
     outputString01 = ""     # without removing stopwords and lemmatization
     outputString02 = ""     # remove stopwords
     outputString03 = ""     # lemmatization
@@ -75,17 +75,17 @@ def preprocess():
     
     for record in reviewFile:
         record = record.strip().split("\t") # tab-delimited .txt file
-        
-        outputString01 += record[0] + "\t"  
-        outputString02 += record[0] + "\t"   
-        outputString03 += record[0] + "\t"  
-        outputString04 += record[0] + "\t"
+        if len(record)==2:
+            outputString01 += record[0] + "\t"  
+            outputString02 += record[0] + "\t"   
+            outputString03 += record[0] + "\t"  
+            outputString04 += record[0] + "\t"
 
-        cleanedWriting = cleanSentence(record[1])
-        outputString01 += cleanedWriting + "\n"
-        outputString02 += removeStopWords(cleanedWriting) + "\n"
-        outputString03 += lemmatizeSentence(cleanedWriting) + "\n"
-        outputString04 += lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
+            cleanedWriting = cleanSentence(record[1])
+            outputString01 += cleanedWriting + "\n"
+            outputString02 += removeStopWords(cleanedWriting) + "\n"
+            outputString03 += lemmatizeSentence(cleanedWriting) + "\n"
+            outputString04 += lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
 
     reviewFile.close()
     
