@@ -1,15 +1,15 @@
 class WordInformation:
     """
-    The WordInformation class stores information about a unigram or bigram.
-    Each unique n-gram in the dictionary will have a WordInformation
+    The WordInformation class stores information about a unigram.
+    Each unique unigram in the dictionary will have a WordInformation
     object as its key in the dictionary.
     
     Attributes:
         MAX_RATING (int): The number of class ratings (normally 1-5 stars)
 
-        tf (int[])      : Term frequency for each class rating
+        tf (float[])    : Term frequency for each class rating
                                   
-        tfidf (int[])   : The weighted score given for each class rating
+        tfidf (float[]) : The weighted score given for each class rating
     """
 
     
@@ -45,6 +45,13 @@ class WordInformation:
 
 
     def setTF(self, totalTerms):
+        """
+        Set the term frequency of the current unigram.
+
+        Arguments:
+            totalTerms(int[]): Total number of words that appear in
+                               each class rating.
+        """
         for i in range(1, self.MAX_RATING + 1):
             if totalTerms[i] > 0:
                 self.tf[i] = self.tf[i]/totalTerms[i]
