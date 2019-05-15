@@ -2,6 +2,30 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import re
 
+def cleanDataset(rawDatasetFilename):
+    """
+    Filter out any rows that do not have a given rating, or a
+    do not have a text review (empty review). It OVERRIDES the
+    old dataset file with a new cleaned one.
+    Arguments:
+        rawDatasetFilename (str): the dataset file in .txt format
+    """
+    outputString = ""
+    file = open(rawDatasetFilename, "r", encoding="utf-8-sig")
+    
+    for record in file:
+        record = record.strip().split("\t")
+        # if record has a given rating, and # if the text review is not empty
+        if len(record) == 2 and len(record[1]) > 0: 
+            outputString += record[0] + "\t" + record[1] + "\n"
+                
+    file.close()
+
+    newCleanedFile = open(rawDatasetFilename, "w", encoding="utf-8-sig")
+    newCleanedFile.write(outputString.rstrip())
+    newCleanedFile.close()
+
+
 def cleanSentence(inputSentence):
     """
     First change all uppercase characters to lowercase. Then, three regular
@@ -68,12 +92,14 @@ def lemmatizeSentence(inputSentence):
 
 def preprocess(rawDatasetFilename):
     """
-    Reads in a text file that is tab-delimited, which is information separated by
-    a tab, and one record per line.
+    Reads in a text file that is tab-delimited, which is information
+    separated by a tab, and one record per line. Any text review that
+    is empty after being mutated by cleanSentence(), will be excluded
+    from the output text file.
     Arguments:
         rawDatasetFile (str): the dataset file in .txt format
     """
-    rawDatasetFile = open(rawDatasetFilename, "r", encoding="latin-1")
+    rawDatasetFile = open(rawDatasetFilename, "r", encoding="utf-8-sig")
     outputString01 = ""     # without removing stopwords and lemmatization
     outputString02 = ""     # remove stopwords
     outputString03 = ""     # lemmatization
@@ -81,16 +107,15 @@ def preprocess(rawDatasetFilename):
     
     for record in rawDatasetFile:
         record = record.strip().split("\t") # tab-delimited .txt file
-        if len(record) == 2: # if record has both rating and text review
         
-            cleanedWriting = cleanSentence(record[1])
+        cleanedWriting = cleanSentence(record[1])
 
-            # if the text review after cleaning is not empty
-            if len(cleanedWriting) > 0:     
-                outputString01 += record[0] + "\t" + cleanedWriting + "\n"
-                outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
-                outputString03 += record[0] + "\t" + lemmatizeSentence(cleanedWriting) + "\n"
-                outputString04 += record[0] + "\t" + lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
+        # if the text review after cleaning is not empty
+        if len(cleanedWriting) > 0:     
+            outputString01 += record[0] + "\t" + cleanedWriting + "\n"
+            outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
+            outputString03 += record[0] + "\t" + lemmatizeSentence(cleanedWriting) + "\n"
+            outputString04 += record[0] + "\t" + lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
 
     rawDatasetFile.close()
     
@@ -113,5 +138,6 @@ def preprocess(rawDatasetFilename):
 
 if __name__ == "__main__":
     stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer() 
+    lemmatizer = WordNetLemmatizer()
+    cleanDataset("34661.txt")
     preprocess("34661.txt")
