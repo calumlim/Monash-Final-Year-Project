@@ -1,14 +1,14 @@
 import math
-from WordInformation import WordInformation
+from Classes.WordInformation import WordInformation
 
 class Dictionary:
     """
-    Dictionary class that stores unigrams and bigrams. The key/value pair
-    is n-gram : WordInformation, where WordInformation is a class.
+    Dictionary class that stores unigrams. The key/value pair
+    is unigram : WordInformation, where WordInformation is a class.
 
     Attributes:
         MAX_RATING (int): The maximum rating
-        dictionary (dict): The dictionary to store n-grams
+        dictionary (dict): The dictionary to store unigrams
         totalTerms (int[]): To keep track of number of terms that appear
                             in each class rating
     """
@@ -23,9 +23,17 @@ class Dictionary:
 
 
     def extractWords(self, inputDataset):
+        """
+        Extract the words from a dataset file, that should already be
+        preprocessed by the preprocess.py Python script.
+        Store the unigrams into the dictionary.
+        
+        Arguments:
+            inputDataset (str): The dataset to be trained
+        """
         reviewFile = open(inputDataset, "r", encoding="utf-8-sig")
         for record in reviewFile:
-            record = record.strip().split("\t")     # tab-delimited .txt file 
+            record = record.strip().split("\t")     # tab-delimited .txt file
             self.addUnigrams(int(record[0]), record[1])
         reviewFile.close()
 
@@ -43,7 +51,7 @@ class Dictionary:
 
     def addItem(self, key):
         """
-        Add a new n-gram to the dictionary. Method should not be called
+        Add a new unigram to the dictionary. Method should not be called
         if the key already exist in the dictionary.
 
         Raises:
@@ -60,7 +68,10 @@ class Dictionary:
 
     def addUnigrams(self, rating, writtenReview):
         """"
-        Add unigrams into a dictionary.
+        Add unigrams into a dictionary. Increment the unigrams
+        frequency everytime it occurs, and increment the total
+        number of words that occur in the class rating (totalTerms),
+        to calculate the TF later on.
 
         Arguments:
             rating (int): The rating given for a written review
@@ -76,7 +87,7 @@ class Dictionary:
 
     def computeTF(self):
         """
-        Compute the TF for each word in the dictionary
+        Compute the TF for each word in the dictionary.
         """
         for word in self.dictionary:
             self.dictionary[word].setTF(self.getTotalTerms())
@@ -84,7 +95,7 @@ class Dictionary:
 
     def computeTFIDF(self):
         """
-        Compute the TFIDF scores for each n-gram in the dictionary
+        Compute the TFIDF scores for each unigram in the dictionary.
 
         Arguments:
             MAX_RATING (int): The maximum rating given in the whole data set
