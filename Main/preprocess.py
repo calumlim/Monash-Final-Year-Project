@@ -4,8 +4,8 @@ import re
 
 def cleanSentence(inputSentence):
     """
-    First change all uppercase characters to lowercase. Then, three regular expression rules that is used to 
-    preprocess the written reviews in the data set.
+    First change all uppercase characters to lowercase. Then, three regular
+    expression rules that is used to preprocess the written reviews in the data set.
     1 - Remove punctuations.
     2 - Remove any two or more whitespaces together
     3 - Remove any whitespace from the start or end of a sentence
@@ -66,8 +66,14 @@ def lemmatizeSentence(inputSentence):
     return " ".join(outputSentence)
 
 
-def preprocess():
-    reviewFile = open("amazon-consumer-review.txt", "r", encoding="latin-1")
+def preprocess(rawDatasetFile):
+    """
+    Reads in a text file that is tab-delimited, which is information separated by
+    a tab, and one record per line.
+    Arguments:
+        rawDatasetFile (str): the dataset file in .txt format
+    """
+    reviewFile = open(rawDatasetFile, "r", encoding="latin-1")
     outputString01 = ""     # without removing stopwords and lemmatization
     outputString02 = ""     # remove stopwords
     outputString03 = ""     # lemmatization
@@ -75,7 +81,7 @@ def preprocess():
     
     for record in reviewFile:
         record = record.strip().split("\t") # tab-delimited .txt file
-        if len(record)==2:
+        if len(record) == 2: # if record has both rating and text review
             outputString01 += record[0] + "\t"  
             outputString02 += record[0] + "\t"   
             outputString03 += record[0] + "\t"  
@@ -109,4 +115,4 @@ def preprocess():
 if __name__ == "__main__":
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer() 
-    preprocess()
+    preprocess("34661.txt")
