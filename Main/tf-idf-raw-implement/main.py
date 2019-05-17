@@ -1,47 +1,86 @@
-from Dictionary import Dictionary
+from Classes.Dictionary import Dictionary
+from sklearn import metrics
+import numpy as np
+import os
+
 
 def getDictionary(inputDataset):
+    """
+    Open a dataset with given ratings and written reviews, then
+    extract unigrams and compute the TF-IDF.
+    
+    Arguments:
+        inputDatset (str): The file name of the dataset text file to train
+    Return:
+        wordDictionary (Dictionary): Dictionary instance that stores
+                                     unigrams and its information such as
+                                     tf-idf score, number of appearance in
+                                     different documents, etc.
+    """
     wordDictionary = Dictionary(MAX_RATING)
     wordDictionary.extractWords(inputDataset)
     wordDictionary.computeTF()
     wordDictionary.computeTFIDF()
-    
     return wordDictionary    
 
     
 def runTest(dictionary, datasetToTestOn):
-    totalRecords = 0
-    correctlyPredicted = 0
+    """
+    Run test with a given Dictionary instance, and a dataset to predict.
+    
+    Arguments:
+        dictionary (Dictionary): Dictionary instance that has the tf-idf
+                                 scores for all of the unique unigrams.
+    """
+    actualRatings = []
+    predictedRatings = []
+    classLabels = [1,2,3,4,5]
+    
     reviewFile = open(datasetToTestOn, "r", encoding="utf-8-sig")
-    
+
+    # Go through all of the reviews in the dataset to predict,
+    # append the actual rating, and the predicted rating of that review
     for record in reviewFile:
-        totalRecords += 1
-        record = record.strip().split("\t") # tab-delimited .txt file
-        if dictionary.predictRating(record[1]) == int(record[0]):
-            correctlyPredicted += 1  
-      
-    print(correctlyPredicted, totalRecords)
-    print("Accuracy: ", end="")
-    print(correctlyPredicted/totalRecords)
+        record = record.strip().split("\t")
+        actualRatings.append(int(record[0]))
+        predictedRatings.append(dictionary.predictRating(record[1]))
     reviewFile.close()
-    
+
+    # Percentage of correctly predicted ratings
+    accuracy = np.sum(np.array(predictedRatings) == np.array(actualRatings))
+    accuracy /= len(actualRatings)
+    print("Accuracy:", round(accuracy, 2))
+
+    # Other metrics calculated using sklearn metrics library
+    print(metrics.classification_report(actualRatings,
+                                        predictedRatings,
+                                        classLabels))
+
 
 if __name__ == "__main__":
 
     MAX_RATING = 5
     
     print("\nWith stop words and no lemmatization")
-    wordDictionary = getDictionary("dataset-preprocessed-01.txt")
-    runTest(wordDictionary, "dataset-amazon.txt")
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt") 
+    wordDictionary = getDictionary(preprocessedFile)
+    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
+    runTest(wordDictionary, testDataset)
 
     print("\nRemoved stop words")
-    wordDictionary = getDictionary("dataset-preprocessed-02.txt")
-    runTest(wordDictionary, "dataset-amazon.txt")
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt") 
+    wordDictionary = getDictionary(preprocessedFile)
+    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
+    runTest(wordDictionary, testDataset)
 
     print("\nWith lemmatization")
-    wordDictionary = getDictionary("dataset-preprocessed-03.txt")
-    runTest(wordDictionary, "dataset-amazon.txt")
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt") 
+    wordDictionary = getDictionary(preprocessedFile)
+    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
+    runTest(wordDictionary, testDataset)
 
     print("\nRemove stop words and has been lemmatized")
-    wordDictionary = getDictionary("dataset-preprocessed-04.txt")
-    runTest(wordDictionary, "dataset-amazon.txt")
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt") 
+    wordDictionary = getDictionary(preprocessedFile)
+    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
+    runTest(wordDictionary, testDataset)
