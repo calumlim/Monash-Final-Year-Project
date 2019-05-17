@@ -106,6 +106,25 @@ class Dictionary:
             self.dictionary[word].setTFIDF(idf)
 
 
+    def printTopWords(self, N):
+        """
+        Print the top N features (unigrams) for each class rating (1-5 stars)
+
+        Arguments:
+            N (int): The top N features (unigrams) to be printed out
+        """
+        topWords = []
+        for i in range(self.MAX_RATING):
+            topWords.append(dict(sorted(self.dictionary.items(), key=lambda x: x[1].tfidf[i+1], reverse=True)[:N]))
+            
+        for i in range(len(topWords)):
+            print("Top " + str(N) + " words for class rating " + str(i + 1))
+            print("--------------------------------------")
+            for j in topWords[i]:
+                print(j, self.dictionary[j].tfidf[i + 1])
+            print()
+        
+
     def predictRating(self, writtenReview):
         totalScores = [0] * 6
         sentence = writtenReview.split()
@@ -117,4 +136,8 @@ class Dictionary:
                     if wordScores[i] != 0:
                         totalScores[i] += wordScores[i]
 
-        return totalScores.index(max(totalScores))
+        maxIndex = totalScores.index(max(totalScores))
+        if maxIndex == 0:
+            return 5
+        return maxIndex
+    
