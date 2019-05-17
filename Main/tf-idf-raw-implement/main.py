@@ -1,5 +1,9 @@
+import sys
+sys.path.append("..")
+
 from Classes.Dictionary import Dictionary
 from sklearn import metrics
+from preprocess import cleanSentence
 import numpy as np
 import os
 
@@ -45,8 +49,9 @@ def runTest(dictionary, datasetToTestOn):
     # append the actual rating, and the predicted rating of that review
     for record in reviewFile:
         record = record.strip().split("\t")
+        textReview = cleanSentence(record[1])
         actualRatings.append(int(record[0]))
-        predictedRatings.append(dictionary.predictRating(record[1]))
+        predictedRatings.append(dictionary.predictRating(textReview))
     reviewFile.close()
 
     # Percentage of correctly predicted ratings
