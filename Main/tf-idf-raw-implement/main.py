@@ -27,10 +27,13 @@ def getDictionary(inputDataset):
 def runTest(dictionary, datasetToTestOn):
     """
     Run test with a given Dictionary instance, and a dataset to predict.
+    Results will be printed out.
     
     Arguments:
         dictionary (Dictionary): Dictionary instance that has the tf-idf
                                  scores for all of the unique unigrams.
+        datasetToTestOn (str): Name of a dataset text file that is used
+                               to predict ratings.
     """
     actualRatings = []
     predictedRatings = []
