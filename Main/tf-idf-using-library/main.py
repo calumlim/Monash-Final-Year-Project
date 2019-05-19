@@ -1,9 +1,13 @@
+import sys
+sys.path.append("..")
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
 from sklearn import metrics
+from preprocess import cleanSentence
 import numpy
 import os
+import pandas
      
         
 def extractWords(datasetFile):
@@ -19,7 +23,7 @@ def extractWords(datasetFile):
 def runTests(corpusToTrain, reviewsToPredictFile):
     classLabels = [1,2,3,4,5]
     tfidf_vector = TfidfVectorizer(smooth_idf = True, use_idf = True)
-    
+
     tfidf_matrix = tfidf_vector.fit_transform(corpusToTrain)
     feature_names = tfidf_vector.get_feature_names()
 
@@ -29,8 +33,9 @@ def runTests(corpusToTrain, reviewsToPredictFile):
     reviewFile = open(reviewsToPredictFile, "r", encoding="utf-8-sig")
     for record in reviewFile:
         record = record.strip().split("\t")
+        textReview = cleanSentence(record[1])
         actual_ratings.append(int(record[0]))
-        written_reviews_to_predict.append(record[1])
+        written_reviews_to_predict.append(textReview)
 
     nbModel = MultinomialNB()
     nbModel.fit(tfidf_matrix, classLabels)
@@ -38,23 +43,23 @@ def runTests(corpusToTrain, reviewsToPredictFile):
     new_tfidf_matrix = tfidf_vector.transform(written_reviews_to_predict)
     predicted = nbModel.predict(new_tfidf_matrix)
 
-    totalReviews = 0
-    correctlyPredicted = 0
-    i = 0
-    dic = zip(written_reviews_to_predict, predicted)
-    for predictedReview in dic:
-        if predictedReview[1] == actual_ratings[i]:
-            correctlyPredicted += 1
-        totalReviews += 1
-        i += 1
-        
-    print(totalReviews, correctlyPredicted)
-    print(correctlyPredicted / totalReviews)
-    #print(numpy.mean(predicted == actual_ratings))
+    print("Accuracy:", round(numpy.mean(predicted == actual_ratings), 2))
     print(metrics.classification_report(actual_ratings,
                                         predicted,
                                         classLabels))
-    
+
+
+def printTopWords(tfidfMatrix, featureNames, N):
+    for i in range(5):
+        print("Top " + str(N) + " words for class rating " + str(i + 1))
+        print("--------------------------------------")
+        row = numpy.squeeze(tfidfMatrix[i].toarray())
+
+        topn_ids = numpy.argsort(row)[::-1][:N]
+        top_feats = [(featureNames[j], row[j]) for j in topn_ids]
+        df = pandas.DataFrame(top_feats)
+        print(df)
+        print()
 
 if __name__ == "__main__":
     
