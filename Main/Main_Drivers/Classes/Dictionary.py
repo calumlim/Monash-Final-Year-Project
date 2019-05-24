@@ -1,5 +1,7 @@
 import math
-from Classes.WordInformation import WordInformation
+import sys
+sys.path.append('../..')
+from tf_idf_raw_implement.Classes.WordInformation import WordInformation
 
 class Dictionary:
     """
@@ -133,8 +135,7 @@ class Dictionary:
             if word in self.dictionary:
                 wordScores = self.dictionary[word].getTFIDF()
                 for i in range(1, len(totalScores)):
-                    if wordScores[i] != 0:
-                        totalScores[i] += wordScores[i]
+                    totalScores[i] += wordScores[i]
 
         maxIndex = totalScores.index(max(totalScores))
         if maxIndex == 0:

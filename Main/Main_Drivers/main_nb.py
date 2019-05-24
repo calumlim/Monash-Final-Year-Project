@@ -2,7 +2,6 @@ import sys
 sys.path.append("..")
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.svm import LinearSVC
 from sklearn import metrics
 from preprocess import cleanSentence
 import numpy
