@@ -1,7 +1,7 @@
 import math
 import sys
 sys.path.append('../..')
-from tf_idf_raw_implement.Classes.WordInformation import WordInformation
+from Main_Drivers.Classes.WordInformation import WordInformation
 
 class Dictionary:
     """

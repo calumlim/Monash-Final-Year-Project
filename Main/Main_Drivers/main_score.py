@@ -43,7 +43,7 @@ def runTest(dictionary, datasetToTestOn):
     predictedRatings = []
     classLabels = [1,2,3,4,5]
     
-    reviewFile = open(datasetToTestOn, "r", encoding="utf-8-sig")
+    reviewFile = open(datasetToTestOn, "r", encoding="utf-8-sig", errors="ignore")
 
     # Go through all of the reviews in the dataset to predict,
     # append the actual rating, and the predicted rating of that review
