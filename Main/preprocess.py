@@ -47,7 +47,7 @@ def cleanSentence(inputSentence):
     sentence = sentence.lower()
     
     # 1 remove punctutations
-    sentence = re.sub(r'[.‚,<>?/:;"{}\-_+=)()*&^%$#@!`~|\\]', r' ', sentence)
+    sentence = re.sub(r'[.‚,<>?/:;"{}\-_+=)()*&^%$#@!`~|\\\'\[\]]', r' ', sentence)
 
     # 2 remove two or more whitespaces that are together
     sentence = re.sub(r'[ ]{2,}', r' ', sentence)
@@ -150,5 +150,5 @@ def preprocess(rawDatasetFilename):
 if __name__ == "__main__":
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
-    removeUselessRows("34661.txt")
-    preprocess("34661.txt")
+    removeUselessRows("5.txt")
+    preprocess("5.txt")
