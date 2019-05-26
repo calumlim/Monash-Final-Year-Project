@@ -28,7 +28,7 @@ class WordInformation:
         self.tfidf = [0] * (self.MAX_RATING + 1)           
         
 
-    def getNumRatingsWordAppears(self):
+    def getDocumentFrequency(self):
         """
         Get the number of documents that the word appears in. For example,
         if the word "excellent" appears in reviews that are rated 4 and 5,

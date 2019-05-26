@@ -103,7 +103,7 @@ class Dictionary:
             MAX_RATING (int): The maximum rating given in the whole data set
         """
         for word in self.dictionary:
-            numOfAppearance = self.dictionary[word].getNumRatingsWordAppears()
+            numOfAppearance = self.dictionary[word].getDocumentFrequency()
             idf = math.log( (self.MAX_RATING) / (numOfAppearance), 10 )
             self.dictionary[word].setTFIDF(idf)
 
