@@ -33,14 +33,27 @@ class WordInformation:
         Get the number of documents that the word appears in. For example,
         if the word "excellent" appears in reviews that are rated 4 and 5,
         this method will return 2.
-        
+
+        Raises:
+            Exception: Raises an exception if the first index of the
+                       document frequency isn't 0, because there is no
+                       zero star rating
+            Exception: Raises an exception if the document frequency >
+                       number of class labels (1-5 max).
+                       
         Returns:
             The number of documents that has the word.
         """
+        if self.tf[0] != 0:
+            raise Exception("There is no 0 star rating")
+        
         count = 0
         for frequency in self.tf:
             if frequency != 0:
                 count += 1
+                
+        if count > self.MAX_RATING:
+            raise Exception("Doc. Frequency > No. Class Labels")
         return count
 
 
