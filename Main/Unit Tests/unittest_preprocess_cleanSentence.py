@@ -48,6 +48,24 @@ class MyTest(unittest.TestCase):
 
         testString = ".Word"
         self.assertEqual( cleanSentence(testString), "word")
+
+        testString = "!@#$%^&*(*)-_=+-+=-{}[];':,.<>//?"
+        self.assertEqual( cleanSentence(testString), "")
+
+        testString = "4325<>,.''"
+        self.assertEqual( cleanSentence(testString), "4325")
+
+        testString = "A1B2C3"
+        self.assertEqual( cleanSentence(testString), "a1b2c3")
+
+        testString = "OVER.HERE.SON     ."
+        self.assertEqual( cleanSentence(testString), "over here son")
+
+        testString = "HOW ..32903()"
+        self.assertEqual( cleanSentence(testString), "how 32903")
+
+        testString = ""
+        self.assertEqual( cleanSentence(testString), "")
         
 if __name__ == '__main__':
     
