@@ -51,9 +51,6 @@ class WordInformation:
         for frequency in self.tf:
             if frequency != 0:
                 count += 1
-                
-        if count > self.MAX_RATING:
-            raise Exception("Doc. Frequency > No. Class Labels")
         return count
 
 
