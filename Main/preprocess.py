@@ -75,17 +75,25 @@ def removeStopWords(inputSentence):
 
 def lemmatizeSentence(inputSentence):
     """
+    Lemmatize all the words in a given sentence.
+    
     Arguments:
         inputSentence (str): A written review
         
     Returns:
         outputSentence (str): A written review with the words lemmatized
     """
+    tag_map = defaultdict(lambda : wordnet.NOUN)
+    tag_map['J'] = wordnet.ADJ
+    tag_map['V'] = wordnet.VERB
+    tag_map['R'] = wordnet.ADV
+    
     outputSentence = []
-    inputSentence = inputSentence.split()
+    inputSentence = word_tokenize(inputSentence)
 
-    for word in inputSentence:
-        outputSentence.append(lemmatizer.lemmatize(word))
+    for token, tag in pos_tag(inputSentence):
+        lemma = lemmatizer.lemmatize(token, tag_map[tag[0]])
+        outputSentence.append(lemma)
 
     return " ".join(outputSentence)
 
