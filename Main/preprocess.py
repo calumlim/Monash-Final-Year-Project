@@ -1,8 +1,11 @@
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
+from nltk.stem.wordnet import WordNetLemmatizer
+from nltk import word_tokenize, pos_tag
+from collections import defaultdict
 import re
 
-def cleanDataset(rawDatasetFilename):
+def removeUselessRows(rawDatasetFilename):
     """
     Filter out any rows that do not have a given rating, or a
     do not have a text review (empty review). It OVERRIDES the
@@ -11,7 +14,7 @@ def cleanDataset(rawDatasetFilename):
         rawDatasetFilename (str): the dataset file in .txt format
     """
     outputString = ""
-    file = open(rawDatasetFilename, "r", encoding="utf-8-sig")
+    file = open(rawDatasetFilename, "r", encoding="utf-8-sig", errors="ignore")
     
     for record in file:
         record = record.strip().split("\t")
@@ -147,5 +150,5 @@ def preprocess(rawDatasetFilename):
 if __name__ == "__main__":
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
-    cleanDataset("34661.txt")
+    removeUselessRows("34661.txt")
     preprocess("34661.txt")
