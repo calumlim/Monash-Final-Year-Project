@@ -86,10 +86,6 @@ def lemmatizeSentence(inputSentence):
     Returns:
         outputSentence (str): A written review with the words lemmatized
     """
-    tag_map = defaultdict(lambda : wordnet.NOUN)
-    tag_map['J'] = wordnet.ADJ
-    tag_map['V'] = wordnet.VERB
-    tag_map['R'] = wordnet.ADV
     
     outputSentence = []
     inputSentence = word_tokenize(inputSentence)
@@ -150,5 +146,10 @@ def preprocess(rawDatasetFilename):
 if __name__ == "__main__":
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()
+    tag_map = defaultdict(lambda : wordnet.NOUN)
+    tag_map['J'] = wordnet.ADJ
+    tag_map['V'] = wordnet.VERB
+    tag_map['R'] = wordnet.ADV
+    
     removeUselessRows("5.txt")
     preprocess("5.txt")
