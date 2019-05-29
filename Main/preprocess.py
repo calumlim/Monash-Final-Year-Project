@@ -142,14 +142,14 @@ def preprocess(rawDatasetFilename):
     outputFile.write(outputString04.rstrip())
     outputFile.close()
 
+stop_words = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
+tag_map = defaultdict(lambda : wordnet.NOUN)
+tag_map['J'] = wordnet.ADJ
+tag_map['V'] = wordnet.VERB
+tag_map['R'] = wordnet.ADV
 
-if __name__ == "__main__":
-    stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer()
-    tag_map = defaultdict(lambda : wordnet.NOUN)
-    tag_map['J'] = wordnet.ADJ
-    tag_map['V'] = wordnet.VERB
-    tag_map['R'] = wordnet.ADV
+"""if __name__ == "__main__":
     
-    removeUselessRows("5.txt")
-    preprocess("5.txt")
+    removeUselessRows("34661.txt")
+    preprocess("34661.txt")"""
