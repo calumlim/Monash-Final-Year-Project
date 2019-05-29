@@ -8,7 +8,7 @@ import numpy as np
 import os
 
 
-def getDictionary(inputDataset):
+def getDictionary(inputDataset, outputFileName):
     """
     Open a dataset with given ratings and written reviews, then
     extract unigrams and compute the TF-IDF.
@@ -21,14 +21,15 @@ def getDictionary(inputDataset):
                                      tf-idf score, number of appearance in
                                      different documents, etc.
     """
-    wordDictionary = Dictionary(MAX_RATING)
+    print("\nComputing TF-IDF values for file - ", outputFileName)
+    wordDictionary = Dictionary(5)
     wordDictionary.extractWords(inputDataset)
     wordDictionary.computeTF()
     wordDictionary.computeTFIDF()
     return wordDictionary    
 
     
-def runTest(dictionary, datasetToTestOn):
+def runTests(inputDataset, reviewsToPredictFile, outputFileName):
     """
     Run test with a given Dictionary instance, and a dataset to predict.
     Results will be printed out.
@@ -39,11 +40,12 @@ def runTest(dictionary, datasetToTestOn):
         datasetToTestOn (str): Name of a dataset text file that is used
                                to predict ratings.
     """
+    dictionary = getDictionary(inputDataset, outputFileName)
     actualRatings = []
     predictedRatings = []
     classLabels = [1,2,3,4,5]
     
-    reviewFile = open(datasetToTestOn, "r", encoding="utf-8-sig", errors="ignore")
+    reviewFile = open(reviewsToPredictFile, "r", encoding="utf-8-sig", errors="ignore")
 
     # Go through all of the reviews in the dataset to predict,
     # append the actual rating, and the predicted rating of that review
@@ -54,41 +56,42 @@ def runTest(dictionary, datasetToTestOn):
         predictedRatings.append(dictionary.predictRating(textReview))
     reviewFile.close()
 
-    # Percentage of correctly predicted ratings
+    # output the results into a .txt file
+    outputFileName = "Highest Score Algorithm - " + outputFileName + ".txt"
+    outputString = outputFileName[:-3]
     accuracy = np.sum(np.array(predictedRatings) == np.array(actualRatings))
     accuracy /= len(actualRatings)
-    print("Accuracy:", round(accuracy, 2))
+    outputString += "\nAccuracy:" + str(round(accuracy, 2)) + "\n"
 
     # Other metrics calculated using sklearn metrics library
-    print(metrics.classification_report(actualRatings,
+    outputString += metrics.classification_report(actualRatings,
                                         predictedRatings,
-                                        classLabels))
+                                        classLabels)
+    outputFile = open(outputFileName, "w")
+    outputFile.write(outputString)
+    outputFile.close()
 
+def runMainScore(testDataset):
+    print("Running test using Highest Score Algorithm")
+    
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "With stop words and no lemmatization")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "Removed stop words")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "With lemmatization")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "Remove stop words and has been lemmatized")
+
+    print("\nCompleted! Output files starts with Highest Score Algorithm -")
 
 if __name__ == "__main__":
-
-    MAX_RATING = 5
     
-    print("\nWith stop words and no lemmatization")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt") 
-    wordDictionary = getDictionary(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "5.txt")
-    runTest(wordDictionary, testDataset)
-
-    print("\nRemoved stop words")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt") 
-    wordDictionary = getDictionary(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "5.txt")
-    runTest(wordDictionary, testDataset)
-
-    print("\nWith lemmatization")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt") 
-    wordDictionary = getDictionary(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "5.txt")
-    runTest(wordDictionary, testDataset)
-
-    print("\nRemove stop words and has been lemmatized")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt") 
-    wordDictionary = getDictionary(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "5.txt")
-    runTest(wordDictionary, testDataset)
+    runMainScore("5.txt")

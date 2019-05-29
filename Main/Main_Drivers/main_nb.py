@@ -9,23 +9,63 @@ import os
 import pandas
      
         
-def extractWords(datasetFile):
+def extractWords(inputDataset):
+    """
+    Reads in a txt file and adds each review into different index of
+    an array, based on the rating of the review. E.g. all the written
+    review with 3 star rating will be combined into a string and
+    stored into the 3rd index (index 2).
+
+    Arguments:
+        inputDataset (str): name of dataset txt file
+    """
     outputArray = [""] * 5
-    reviewFile = open(datasetFile, "r", encoding="utf-8-sig")
+    reviewFile = open(inputDataset, "r", encoding="utf-8-sig")
     for record in reviewFile:
         record = record.strip("\n").split("\t")
         rating = int(record[0])
         outputArray[rating - 1] += record[1] + " "
+    reviewFile.close()
     return outputArray
 
 
-def runTests(corpusToTrain, reviewsToPredictFile):
-    classLabels = [1,2,3,4,5]
+def computeTFIDF(inputDataset, outputFileName):
+    """
+    Compute TF-IDF values.
+
+    Arguments:
+        inputDataset (str): name of the dataset txt file
+    
+    Returns:
+        tfidf_vector : a TfidfVectorizer object
+        tfidf_vector : the feature matrix of the input data set
+    """
+    print("\nComputing TF-IDF values for file - ", outputFileName)
+    corpusToTrain = extractWords(inputDataset)
     tfidf_vector = TfidfVectorizer(smooth_idf = True, use_idf = True)
-
     tfidf_matrix = tfidf_vector.fit_transform(corpusToTrain)
-    feature_names = tfidf_vector.get_feature_names()
+    return [tfidf_vector, tfidf_matrix]
 
+
+def runTests(inputDataset, reviewsToPredictFile, outputFileName):
+    """
+    Run test using the inputDataset. Prediction model being used is
+    Multinomial Naive Bayes.
+
+    Arguments:
+        inputDataset (str): the input data set to be used for trainig
+        reviewsToPredictFile (str): the data set file to be used for prediction
+        outputFileName (str): name of the file the results will be printed to
+    """
+    classLabels = [1,2,3,4,5]
+
+    tfidf_vector, tfidf_matrix = computeTFIDF(inputDataset, outputFileName)
+
+    # fit the tf-idf values into the prediction model (Naive Bayes)
+    nbModel = MultinomialNB()
+    nbModel.fit(tfidf_matrix, classLabels)
+
+    # store the actual ratings and written reviews to predict
     actual_ratings = []
     written_reviews_to_predict = []
 
@@ -36,16 +76,23 @@ def runTests(corpusToTrain, reviewsToPredictFile):
         actual_ratings.append(int(record[0]))
         written_reviews_to_predict.append(textReview)
 
-    nbModel = MultinomialNB()
-    nbModel.fit(tfidf_matrix, classLabels)
-    
+    # create new matrix for the reviews to be predicted,
+    # and start predicting
     new_tfidf_matrix = tfidf_vector.transform(written_reviews_to_predict)
     predicted = nbModel.predict(new_tfidf_matrix)
 
-    print("Accuracy:", round(numpy.mean(predicted == actual_ratings), 2))
-    print(metrics.classification_report(actual_ratings,
+    # output the results into a .txt file
+    outputFileName = "Naive Bayes (Multinomial) - " + outputFileName + ".txt"
+    outputString = outputFileName[:-3]
+    outputString += "\nAccuracy:"
+    outputString += str(round(numpy.mean(predicted == actual_ratings), 2))
+    outputString += "\n"
+    outputString += metrics.classification_report(actual_ratings,
                                         predicted,
-                                        classLabels))
+                                        classLabels)
+    outputFile = open(outputFileName, "w")
+    outputFile.write(outputString)
+    outputFile.close()
 
 
 def printTopWords(tfidfMatrix, featureNames, N):
@@ -60,28 +107,27 @@ def printTopWords(tfidfMatrix, featureNames, N):
         print(df)
         print()
 
+def runMainNB(testDataset):
+    print("Running test using Multinomial Naive Bayes")
+    
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "With stop words and no lemmatization")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "Removed stop words")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "With lemmatization")
+
+    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt")
+    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    runTests(preprocessedFile, testDataset, "Remove stop words and has been lemmatized")
+
+    print("\nCompleted! Output files starts with Naive Bayes (Multinomial) -")
+
 if __name__ == "__main__":
     
-    print("\nWith stop words and no lemmatization")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt")
-    writtenReviews = extractWords(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
-    runTests(writtenReviews, testDataset)
-
-    print("\nRemoved stop words")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt")
-    writtenReviews = extractWords(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
-    runTests(writtenReviews, testDataset)
-
-    print("\nWith lemmatization")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt")
-    writtenReviews = extractWords(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
-    runTests(writtenReviews, testDataset)
-
-    print("\nRemove stop words and has been lemmatized")
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt")
-    writtenReviews = extractWords(preprocessedFile)
-    testDataset = os.path.join(os.getcwd(), "..", "34661.txt")
-    runTests(writtenReviews, testDataset)
+    runMainNB("5.txt")
