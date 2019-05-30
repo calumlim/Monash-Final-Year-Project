@@ -30,6 +30,18 @@ class MyTest(unittest.TestCase):
         testString = " ".join(stopwordsList)
         outputString = removeStopWords(testString)
         self.assertEqual(outputString, "")
+
+        testString = "such a turn off i other what these"
+        outputString = removeStopWords(testString)
+        self.assertEqual(outputString, "turn")
+
+        testString = "after so now have hers we will do it"
+        outputString = removeStopWords(testString)
+        self.assertEqual(outputString, "")
+
+        testString = "i have been over this again and again"
+        outputString = removeStopWords(testString)
+        self.assertEqual(outputString, "")
         
         
 if __name__ == '__main__':
