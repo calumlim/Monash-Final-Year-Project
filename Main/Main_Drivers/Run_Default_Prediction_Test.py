@@ -9,7 +9,7 @@ import main_score, main_svm, main_nb
 
 if __name__ == "__main__":
     
-    datasetCSV = "34661.csv"
+    datasetCSV = "amazon_dataset.csv"
     rating_col = "A"
     review_col = "B"
     datasetTxtFile = datasetCSV[:-3] + "txt"
