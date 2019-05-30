@@ -5,30 +5,6 @@ from nltk import word_tokenize, pos_tag
 from collections import defaultdict
 import re
 
-def removeUselessRows(rawDatasetFilename):
-    """
-    Filter out any rows that do not have a given rating, or a
-    do not have a text review (empty review). It OVERRIDES the
-    old dataset file with a new cleaned one.
-    Arguments:
-        rawDatasetFilename (str): the dataset file in .txt format
-    """
-    outputString = ""
-    file = open(rawDatasetFilename, "r", encoding="utf-8-sig", errors="ignore")
-    
-    for record in file:
-        record = record.strip().split("\t")
-        # if record has a given rating, and # if the text review is not empty
-        if len(record) == 2 and len(record[1]) > 0: 
-            outputString += record[0] + "\t" + record[1] + "\n"
-                
-    file.close()
-
-    newCleanedFile = open(rawDatasetFilename, "w", encoding="utf-8-sig")
-    newCleanedFile.write(outputString.rstrip())
-    newCleanedFile.close()
-
-
 def cleanSentence(inputSentence):
     """
     First change all uppercase characters to lowercase. Then, three regular
