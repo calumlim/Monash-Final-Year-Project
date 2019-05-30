@@ -31,7 +31,7 @@ if __name__ == "__main__":
     
     print("\nPreprocessing fileForTraining.txt, this may take a while..")
     
-    preprocess.preprocess(trainingFile)
+    preprocess.preprocess(trainingFile, "1111")
 
     print("\nPreprocessing complete! 4 txt files created")
   

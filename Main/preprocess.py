@@ -73,14 +73,21 @@ def lemmatizeSentence(inputSentence):
     return " ".join(outputSentence)
 
 
-def preprocess(rawDatasetFilename):
+def preprocess(rawDatasetFilename, settings="1111"):
     """
     Reads in a text file that is tab-delimited, which is information
     separated by a tab, and one record per line. Any text review that
     is empty after being mutated by cleanSentence(), will be excluded
     from the output text file.
+
+    Settings can be changed by specifying which combination of natural
+    language processing functions. For example, if settings == "0011",
+    it means output file for stop words removal, and stop words removal
+    and lemmatization
+    
     Arguments:
         rawDatasetFile (str): the dataset file in .txt format
+        settings (str): a bit string to change settings, default set to '1111'
     """
     rawDatasetFile = open(rawDatasetFilename, "r", encoding="utf-8-sig", errors="ignore")
     outputString01 = ""     # without removing stopwords and lemmatization
@@ -94,29 +101,37 @@ def preprocess(rawDatasetFilename):
         cleanedWriting = cleanSentence(record[1])
 
         # if the text review is not empty after cleaning, and after removing stop words
-        if len(cleanedWriting) > 0 and len(removeStopWords(cleanedWriting)) > 0:     
-            outputString01 += record[0] + "\t" + cleanedWriting + "\n"
-            outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
-            outputString03 += record[0] + "\t" + lemmatizeSentence(cleanedWriting) + "\n"
-            outputString04 += record[0] + "\t" + lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
+        if len(cleanedWriting) > 0 and len(removeStopWords(cleanedWriting)) > 0:
+            if settings[0] == "1":
+                outputString01 += record[0] + "\t" + cleanedWriting + "\n"
+            if settings[1] == "1":
+                outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
+            if settings[2] == "1":
+                outputString03 += record[0] + "\t" + lemmatizeSentence(cleanedWriting) + "\n"
+            if settings[3] == "1":
+                outputString04 += record[0] + "\t" + lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
 
     rawDatasetFile.close()
-    
-    outputFile = open("dataset-preprocessed-01.txt", "w", encoding="utf-8-sig")
-    outputFile.write(outputString01.rstrip())
-    outputFile.close()
 
-    outputFile = open("dataset-preprocessed-02.txt", "w", encoding="utf-8-sig")
-    outputFile.write(outputString02.rstrip())
-    outputFile.close()
+    if settings[0] == "1":
+        outputFile = open("dataset-preprocessed-01.txt", "w", encoding="utf-8-sig")
+        outputFile.write(outputString01.rstrip())
+        outputFile.close()
 
-    outputFile = open("dataset-preprocessed-03.txt", "w", encoding="utf-8-sig")
-    outputFile.write(outputString03.rstrip())
-    outputFile.close()
+    if settings[1] == "1":
+        outputFile = open("dataset-preprocessed-02.txt", "w", encoding="utf-8-sig")
+        outputFile.write(outputString02.rstrip())
+        outputFile.close()
 
-    outputFile = open("dataset-preprocessed-04.txt", "w", encoding="utf-8-sig")
-    outputFile.write(outputString04.rstrip())
-    outputFile.close()
+    if settings[2] == "1":
+        outputFile = open("dataset-preprocessed-03.txt", "w", encoding="utf-8-sig")
+        outputFile.write(outputString03.rstrip())
+        outputFile.close()
+
+    if settings[3] == "1":
+        outputFile = open("dataset-preprocessed-04.txt", "w", encoding="utf-8-sig")
+        outputFile.write(outputString04.rstrip())
+        outputFile.close()
 
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
