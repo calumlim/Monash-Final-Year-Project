@@ -149,7 +149,3 @@ tag_map['J'] = wordnet.ADJ
 tag_map['V'] = wordnet.VERB
 tag_map['R'] = wordnet.ADV
 
-"""if __name__ == "__main__":
-    
-    removeUselessRows("34661.txt")
-    preprocess("34661.txt")"""
