@@ -106,25 +106,22 @@ def printTopWords(tfidfMatrix, featureNames, N):
         print()
 
 def runMainSVM(testDataset):
-    print("Running test using Linear Support Vector")
+    print("\nRunning test using Linear Support Vector")
     
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-01.txt")
-    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    preprocessedFile = "dataset-preprocessed-01.txt"
     runTests(preprocessedFile, testDataset, "With stop words and no lemmatization")
 
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-02.txt")
-    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    preprocessedFile = "dataset-preprocessed-02.txt"
     runTests(preprocessedFile, testDataset, "Removed stop words")
 
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-03.txt")
-    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    preprocessedFile = "dataset-preprocessed-03.txt"
     runTests(preprocessedFile, testDataset, "With lemmatization")
 
-    preprocessedFile = os.path.join(os.getcwd(), "..", "dataset-preprocessed-04.txt")
-    testDataset = os.path.join(os.getcwd(), "..", testDataset)
+    preprocessedFile = "dataset-preprocessed-04.txt"
     runTests(preprocessedFile, testDataset, "Remove stop words and has been lemmatized")
 
     print("\nCompleted! Output files starts with SVM (Linear SVC) -")
+    print("===================================================================")
 
 if __name__ == "__main__":
     
