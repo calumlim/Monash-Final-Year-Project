@@ -82,7 +82,7 @@ def preprocess(rawDatasetFilename):
     Arguments:
         rawDatasetFile (str): the dataset file in .txt format
     """
-    rawDatasetFile = open(rawDatasetFilename, "r", encoding="utf-8-sig")
+    rawDatasetFile = open(rawDatasetFilename, "r", encoding="utf-8-sig", errors="ignore")
     outputString01 = ""     # without removing stopwords and lemmatization
     outputString02 = ""     # remove stopwords
     outputString03 = ""     # lemmatization
