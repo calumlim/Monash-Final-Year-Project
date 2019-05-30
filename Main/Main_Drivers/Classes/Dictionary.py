@@ -128,6 +128,22 @@ class Dictionary:
         
 
     def predictRating(self, writtenReview):
+        """
+        Predict the rating of a written review using the Highest Score
+        Algorithm. The highest score algorithm totals up the TF-IDF score
+        of the sentence for all 5 class labels. Then it returns the
+        class label which has the highest accumulated TF-IDF score.
+        However, for some sentences, the scores for all class labels are 0.
+        Very rare case, but if it does happen, we will just give a predicted
+        rating of 5 star. Reason being is majority of reviews are 5 star
+        rated.
+
+        Arguments:
+            writtenReview (str): A written review to be predicted
+
+        Returns:
+            maxIndex (int): The predicted rating
+        """
         totalScores = [0] * 6
         sentence = writtenReview.split()
         
