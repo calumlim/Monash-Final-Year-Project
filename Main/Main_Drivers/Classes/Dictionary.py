@@ -118,12 +118,13 @@ class Dictionary:
         topWords = []
         for i in range(self.MAX_RATING):
             topWords.append(dict(sorted(self.dictionary.items(), key=lambda x: x[1].tfidf[i+1], reverse=True)[:N]))
-            
+
+        outputFormat = "{:>16} - {:<30}"
         for i in range(len(topWords)):
             print("Top " + str(N) + " words for class rating " + str(i + 1))
             print("--------------------------------------")
             for j in topWords[i]:
-                print(j, self.dictionary[j].tfidf[i + 1])
+                print(outputFormat.format(j, self.dictionary[j].tfidf[i + 1]))
             print()
         
 
