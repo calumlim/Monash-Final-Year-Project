@@ -30,8 +30,7 @@ There are two main driver scripts, both located inside the folder Main_Drivers.
 It is recommended to run these files using Python Shell, rather than command line (so it does not close after finish executing). 
 
 1) Run_Default_Prediction_Test.py script is to run our experimental setup, as explained in our report. The output
-wil be in txt files. The first four variables
-can be changed are:
+wil be in txt files. The first 4 variables can be changed are:
 - datasetCSV : the name of the data set (must be in .csv format)
 - rating_col : the letter of the column for the rating (can be lowercase or uppercase)
 - review_col : the letter of the column for the review (can be lowercase or uppercase)
@@ -41,6 +40,12 @@ can be changed are:
 for this will only be lemmatization only. Once the training is done, the program will
 prompt the user for an integer N, to print out the top N features. This value can be 0. Then the user can
 keep writing a written review, which will then be predicted using SVM.
+
+The first 3 variables can be changed are:
+- datasetCSV : the name of the data set (must be in .csv format)
+- rating_col : the letter of the column for the rating (can be lowercase or uppercase)
+- review_col : the letter of the column for the review (can be lowercase or uppercase)
+
 
 ## Unit Tests
 The unit test scripts are located in the folder Unit Tests.
