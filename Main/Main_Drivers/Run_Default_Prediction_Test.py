@@ -9,11 +9,14 @@ import main_score, main_svm, main_nb
 
 if __name__ == "__main__":
     
+    # VARIABLES CAN BE CHANGED, MORE INFO IN README.MD
     datasetCSV = "amazon_dataset.csv"
     rating_col = "A"
     review_col = "B"
-    datasetTxtFile = datasetCSV[:-3] + "txt"
     trainingPercentage = 0.8
+    
+    # DO NOT CHANGE THESE VARIABLES
+    datasetTxtFile = datasetCSV[:-3] + "txt"
     trainingFile = "fileForTraining.txt"
     predictingFile = "fileForPredicting.txt"
 
