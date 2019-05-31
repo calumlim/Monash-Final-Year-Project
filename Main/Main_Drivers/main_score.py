@@ -41,7 +41,6 @@ def runTests(inputDataset, reviewsToPredictFile, outputFileName):
                                to predict ratings.
     """
     dictionary = getDictionary(inputDataset, outputFileName)
-    print(len(dictionary.dictionary))
     actualRatings = []
     predictedRatings = []
     classLabels = [1,2,3,4,5]
