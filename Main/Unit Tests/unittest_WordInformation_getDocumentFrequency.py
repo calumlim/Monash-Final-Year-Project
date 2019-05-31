@@ -30,7 +30,7 @@ class MyTest(unittest.TestCase):
         testUnit.tf = [0, 0, 0, 0, 0, 3]
         self.assertEqual( testUnit.getDocumentFrequency(), 1)
         
-        testUnit.tf = [0, 3, 3, 0, 0, ]
+        testUnit.tf = [0, 3, 3, 0, 0, 0]
         self.assertEqual( testUnit.getDocumentFrequency(), 2)
 
         testUnit.tf = [0, 3, 0, 3, 0, 0]
