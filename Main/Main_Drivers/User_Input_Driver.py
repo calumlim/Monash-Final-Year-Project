@@ -15,10 +15,16 @@ if __name__ == "__main__":
     There is also a feature to print out the top N features from the
     input data set.
     """
-    
+    # VARIABLES CAN BE CHANGED, MORE INFO IN README.MD
+    # - datasetCSV : the name of the data set (must be in .csv format)
+    # - rating_col : the letter of the column for the rating (can be lowercase or uppercase)
+    # - review_col : the letter of the column for the review (can be lowercase or uppercase)
+    # - trainingPercentage: the percentage used for training (must be float <= 1.0 and > 0.0)
     datasetCSV = "sample_dataset.csv" # csv data set to be trained
     rating_col = "A"
     review_col = "B"
+    
+    # DO NOT CHANGE ANYTHING PAST THIS POINT
     trainingFile = datasetCSV[:-3] + "txt"
 
     print("\nConverting .csv file to .txt")
