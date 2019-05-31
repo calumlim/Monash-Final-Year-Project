@@ -4,7 +4,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import word_tokenize, pos_tag
 from collections import defaultdict
 import re
-import timeit
 
 def cleanSentence(inputSentence):
     """
