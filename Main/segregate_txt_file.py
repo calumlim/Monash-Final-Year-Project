@@ -32,7 +32,6 @@ def segregate(txtFile, trainingPercentage = 0.8):
             reviewsForTraining += str(i) + "\t" + reviews[i][j] + "\n"
         for j in range(numOfRowsForTraining, len(reviews[i])):
             reviewsForPredicting += str(i) + "\t" + reviews[i][j] + "\n"
-            count += 1
     
     file = open("fileForTraining.txt", "w", errors="ignore")
     file.write(reviewsForTraining)
