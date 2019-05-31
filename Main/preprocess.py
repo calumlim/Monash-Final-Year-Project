@@ -4,6 +4,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk import word_tokenize, pos_tag
 from collections import defaultdict
 import re
+import timeit
 
 def cleanSentence(inputSentence):
     """
@@ -108,7 +109,7 @@ def preprocess(rawDatasetFilename, settings="1111"):
             if settings[1] == "1":
                 outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
             if settings[2] == "1":
-                outputString03 += record[0] + "\t" +  + "\n"
+                outputString03 += record[0] + "\t" + lemmatized + "\n"
             if settings[3] == "1":
                 outputString04 += record[0] + "\t" + removeStopWords(lemmatized) + "\n"
 
