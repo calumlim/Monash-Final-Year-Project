@@ -125,6 +125,3 @@ def runMainNB(testDataset):
     print("\nCompleted! Output files starts with Naive Bayes (Multinomial) -")
     print("===================================================================")
 
-if __name__ == "__main__":
-    
-    runMainNB("5.txt")

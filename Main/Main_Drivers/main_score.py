@@ -41,6 +41,7 @@ def runTests(inputDataset, reviewsToPredictFile, outputFileName):
                                to predict ratings.
     """
     dictionary = getDictionary(inputDataset, outputFileName)
+    print(len(dictionary.dictionary))
     actualRatings = []
     predictedRatings = []
     classLabels = [1,2,3,4,5]
@@ -88,7 +89,3 @@ def runMainScore(testDataset):
 
     print("\nCompleted! Output files starts with Highest Score Algorithm -")
     print("===================================================================")
-
-if __name__ == "__main__":
-    
-    runMainScore("5.txt")

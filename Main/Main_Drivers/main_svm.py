@@ -123,6 +123,3 @@ def runMainSVM(testDataset):
     print("\nCompleted! Output files starts with SVM (Linear SVC) -")
     print("===================================================================")
 
-if __name__ == "__main__":
-    
-    runMainSVM("5.txt")

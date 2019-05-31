@@ -34,7 +34,8 @@ if __name__ == "__main__":
     preprocess.preprocess(trainingFile, "1111")
 
     print("\nPreprocessing complete! 4 txt files created")
-  
+
+    # run all 3 prediction models
     cmd = [main_nb.runMainNB(predictingFile),
            main_svm.runMainSVM(predictingFile),
            main_score.runMainScore(predictingFile)
