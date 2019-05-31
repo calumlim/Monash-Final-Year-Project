@@ -1,5 +1,5 @@
 # Monash-Final-Year-Project
-Monash Computer Science Final Year Project: Rating prediction based on user text review
+Monash Computer Science Final Year Project: Rating prediction based on user text review.
 In this project, we are predicting user ratings based on written reviews. We will be using unigrams as our main
 feature extraction method. TF-IDF weighting technique will be used to weigh each unigrams. Then finally, Naive Bayes,
 SVM, and a Highest Score algorithm is used to predict the rating.
@@ -49,7 +49,7 @@ It is recommended to run these files using Python Shell, rather than command lin
 
 ## Credits
 Credits to Dr. Soon Lay Ki, our project supervisor, for guiding us throughout our project. She played a very important 
-role in the research and development of our final year project. Without her, this project may very well not be possible at all.
+role in the research and development of our final year project. Without her, this project may very well be not possible at all.
 
 
 ## License
