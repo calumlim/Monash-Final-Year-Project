@@ -102,14 +102,15 @@ def preprocess(rawDatasetFilename, settings="1111"):
 
         # if the text review is not empty after cleaning, and after removing stop words
         if len(cleanedWriting) > 0 and len(removeStopWords(cleanedWriting)) > 0:
+            lemmatized = lemmatizeSentence(cleanedWriting)
             if settings[0] == "1":
                 outputString01 += record[0] + "\t" + cleanedWriting + "\n"
             if settings[1] == "1":
                 outputString02 += record[0] + "\t" + removeStopWords(cleanedWriting) + "\n"
             if settings[2] == "1":
-                outputString03 += record[0] + "\t" + lemmatizeSentence(cleanedWriting) + "\n"
+                outputString03 += record[0] + "\t" +  + "\n"
             if settings[3] == "1":
-                outputString04 += record[0] + "\t" + lemmatizeSentence(removeStopWords(cleanedWriting)) + "\n"
+                outputString04 += record[0] + "\t" + removeStopWords(lemmatized) + "\n"
 
     rawDatasetFile.close()
 
