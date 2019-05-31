@@ -49,7 +49,9 @@ class MyTest(unittest.TestCase):
                      ("fire fires fired", 'fire fire fire'),
                      ("following follows followed", 'follow follow follow'),
                      ("a b c d e f g h i j k l m", 'a b c d e f g h i j k l m'),
-                     ("n o p q r s t u v q x y z", 'n o p q r s t u v q x y z')
+                     ("n o p q r s t u v q x y z", 'n o p q r s t u v q x y z'),
+                     ("providing provides provided", 'provide provide provide'),
+                     ("dreaming dreams dreamt", 'dream dream dream')
                     ]
 
         for test in testCases:
@@ -63,7 +65,14 @@ class MyTest(unittest.TestCase):
         # (Input word, Expected output word)
         wronglyLemmatized = [("ies", 'ies'),
                              ("disappointed", 'disappoint'),
-                             ("disappoints", 'disappoint')
+                             ("disappoints", 'disappoint'),
+                             ("delighted", 'delight'),
+                             ("recommends", 'recommend'),
+                             ("hooked", 'hook'),
+                             ("upgraded", 'upgrade'),
+                             ("relaxed", 'relax'),
+                             ("amazes", 'amaze'),
+                             ("reconnected", 'reconnect')
                             ]
 
         stringFormat = '{:>15}{:>15}{:>15}'
