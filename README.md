@@ -43,7 +43,8 @@ prompt the user for an integer N, to print out the top N features. This value ca
 keep writing a written review, which will then be predicted using SVM.
 
 ## Unit Tests
-Describe and show how to run the tests with code examples.
+The unit test scripts are located in the folder Unit Tests.
+It is recommended to run these files using Python Shell, rather than command line (so it does not close after finish executing). 
 
 
 ## Credits
