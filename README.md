@@ -13,6 +13,9 @@ SVM, and a Highest Score algorithm is used to predict the rating.
 
 
 ## Installation
+#### IMPORTANT! Our code can only be executed with Python 3 or newer.
+
+
 First step is to clone, or download the software. To clone the project, type in the command "git clone https://github.com/calumlim/Monash-Final-Year-Project.git".
 Or you can just download the system by downloading the ZIP file in our project's GitHub web page.
 
